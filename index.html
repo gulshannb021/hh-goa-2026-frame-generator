@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>HH Goa 2026 — Builder ID Card Generator</title>
+<meta name="description" content="Upload a photo, add your name and role, get your HH Goa 2026 Builder ID Card. Download or share to X with #FrameInGoa.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="site">
+  <div class="brand">
+    <span class="mark">HH</span>
+    <span>
+      Hacker House Goa 2026
+      <span class="sub">BUILDER ID GENERATOR</span>
+    </span>
+  </div>
+  <div class="dots" id="dots">
+    <span class="active" data-step="1"></span>
+    <span data-step="2"></span>
+    <span data-step="3"></span>
+  </div>
+</header>
+
+<div class="event-strip" aria-label="Hacker House Goa event details">
+  <span>GOA, INDIA</span>
+  <span>28–31 OCT 2026</span>
+  <span>#FRAMEINGOA</span>
+</div>
+
+<main>
+
+  <!-- STEP 1 : UPLOAD -->
+  <section class="step active" id="step1">
+    <h1 class="hero-title">Upload your photo</h1>
+    <p class="helper">Any photo works — we’ll fit it for you.</p>
+
+    <div class="poster-card" id="posterCard">
+      <input type="file" id="fileInput" accept="image/*">
+      <canvas id="uploadCanvas" width="1024" height="1037"></canvas>
+      <button type="button" class="change-photo" id="changePhotoBtn">Change photo</button>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-primary btn-full" id="toStep2" disabled>Continue →</button>
+    </div>
+  </section>
+
+  <!-- STEP 2 : DETAILS -->
+  <section class="step" id="step2">
+    <h1 class="hero-title">Your details</h1>
+
+    <div class="field">
+      <label for="nameInput">Name</label>
+      <input type="text" id="nameInput" placeholder="e.g. Jagmohan Palo" maxlength="26">
+      <div class="field-hint" id="nameHint">Enter your name to continue</div>
+    </div>
+
+    <div class="field">
+      <label for="roleInput">Stack / Role</label>
+      <input type="text" id="roleInput" placeholder="e.g. Full-stack · AI/ML" maxlength="24">
+    </div>
+
+    <div class="field">
+      <label for="titleInput">Builder title</label>
+      <div class="title-row">
+        <input type="text" id="titleInput" maxlength="26">
+        <button type="button" class="dice" id="diceBtn" title="Generate a new title">🎲</button>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-ghost" id="toStep1">←</button>
+      <button class="btn btn-primary btn-full" id="toStep3">Generate my card →</button>
+    </div>
+  </section>
+
+  <!-- STEP 3 : RESULT -->
+  <section class="step" id="step3">
+    <h1 class="hero-title">Your ID is ready</h1>
+
+    <div class="card-wrap">
+      <div class="card-shadow">
+        <canvas id="resultCanvas" width="1024" height="1037"></canvas>
+      </div>
+    </div>
+
+    <div class="btn-row" style="margin-top:0;">
+      <button class="btn btn-ghost" id="toStep2b">←</button>
+      <button class="btn btn-outline" id="downloadBtn">Download</button>
+      <button class="btn btn-primary" id="shareBtn">Share to X</button>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-ghost btn-full" id="startOverBtn" style="width:100%;">Start over</button>
+    </div>
+  </section>
+
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script src="app.js"></script>
+</body>
+</html>
