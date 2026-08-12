@@ -261,23 +261,41 @@
     toast('Downloaded ✓');
   });
 
-  document.getElementById('shareBtn').addEventListener('click', async ()=>{
-    const blob = await canvasToBlob();
-    const text = "I'm building at Hacker House Goa 2026 🌴⚡ Made my Builder ID with the HH Goa ID Card Generator. #FrameInGoa";
-    const file = new File([blob], 'hh-goa-2026-builder-id.png', {type:'image/png'});
+ document.getElementById('shareBtn').addEventListener('click', async ()=>{
+  const blob = await canvasToBlob();
+  const text = "I'm building at Hacker House Goa 2026 🌴⚡ Made my Builder ID with the HH Goa ID Card Generator. #FrameInGoa";
+  const file = new File([blob], 'hh-goa-2026-builder-id.png', {type:'image/png'});
 
-    if(navigator.canShare && navigator.canShare({files:[file]})){
-      try{
-        await navigator.share({files:[file], text, title:'HH Goa 2026 Builder ID'});
-        return;
-      }catch(err){
-        if(err && err.name === 'AbortError') return;
-      }
+  // 1) Native share on mobile (preferred)
+  if (navigator.canShare && navigator.canShare({files:[file]})) {
+    try {
+      await navigator.share({files:[file], text, title:'HH Goa 2026 Builder ID'});
+      return;
+    } catch(err){
+      if (err && err.name === 'AbortError') return;
     }
+  }
+
+  // 2) Try copying image to clipboard (desktop browsers that support ClipboardItem)
+  if (navigator.clipboard && navigator.clipboard.write) {
+    try {
+      await navigator.clipboard.write([new ClipboardItem({'image/png': blob})]);
+      toast('Image copied — paste into X');
+      const tweet = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(text);
+      window.open(tweet, '_blank');
+      return;
+    } catch(err){
+      // clipboard failed -> fall through to fallback
+    }
+  }
+
+  // 3) Fallback: open tweet compose first, then trigger download
+  const tweet = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(text);
+  window.open(tweet, '_blank');
+  setTimeout(()=>{
     downloadBlob(blob);
     toast('Image downloaded — attach it on X');
-    const tweet = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(text);
-    setTimeout(()=>window.open(tweet, '_blank'), 600);
-  });
+  }, 800);
+});
 
 })();
